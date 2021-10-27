@@ -40,13 +40,13 @@ export function getStepsForTransformation (
 
 export function transformString (
     operationType: 'Char',
-    initialString: string,
+    baseString: string,
     operations: Array<CharOperationsGroup>,
 ): string;
 
 export function transformString (
     operationType: 'Range',
-    initialString: string,
+    baseString: string,
     operations:  Array<RangeOperations<Operations>>,
 ): string;
 

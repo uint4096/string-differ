@@ -13,7 +13,7 @@ export const CharOperationsHelper = (): CharTransforms => {
     };
 
     function getOperations (): typeof operations {
-        return operations;
+        return operations.reverse();
     };
 
     return { addOperation, getOperations };
