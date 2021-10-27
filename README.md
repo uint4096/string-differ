@@ -88,7 +88,7 @@ will output:
   { type: 'retain', startIndex: 5, endIndex: 13 }
 ]
 ```
-Please note that for *"Range"* output type, the *delete* and *retain* operations will have a *startIndex* and *endIndex* field which represent the range of indeices in the base string (*s1*). The *insert* operations, however, contain the *value* field which may specify one or more than one characters to be inserted.  
+Please note that for *"Range"* output type, the *delete* and *retain* operations will have a *startIndex* and *endIndex* field which represent the range of indices in the base string (*s1*). The *insert* operations, however, contain the *value* field which may specify one or more than one characters to be inserted.  
 
 ### Apply Operations to a String  
 
@@ -155,4 +155,4 @@ will output
 
 ## License  
 
-This library is distributed under the MIT License. See LICENSE.txt for more information.
+This library is distributed under the MIT License. See LICENSE.md for more information.
