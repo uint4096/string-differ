@@ -1,4 +1,4 @@
-import { Levenshtein } from "./stringOperations/algos/Levenshtein";
+import { CalculateLevenshteinMatrix } from "./stringOperations/algos/Levenshtein";
 import { getOperations } from "./stringOperations/algos/Operations";
 import { fromCharOperations } from "./stringTransformation/fromCharOperations";
 import { fromRangeOperations } from "./stringTransformation/fromRangeOperations";
@@ -10,26 +10,26 @@ import {
     ResultTypes
 } from "./utils/types";
 
-export function getTransformSteps (
+export function getStepsForTransformation (
     resultType: 'Char',
     { s1, s2 }: Operands
 ): Array<CharOperationsGroup>;
 
-export function getTransformSteps (
+export function getStepsForTransformation (
     resultType: 'Range',
     { s1, s2 }: Operands
 ): Array<RangeOperations<Operations>>;
 
-export function getTransformSteps (
+export function getStepsForTransformation (
     resultType: ResultTypes,
     { s1, s2 }: Operands
 ) {
     switch (resultType) {
         case 'Range': {
-            return getOperations('Range', Levenshtein(s1, s2), s1, s2);
+            return getOperations('Range', CalculateLevenshteinMatrix(s1, s2), s1, s2);
         }
         case 'Char': {
-            return getOperations('Char', Levenshtein(s1, s2), s1, s2);
+            return getOperations('Char', CalculateLevenshteinMatrix(s1, s2), s1, s2);
         }
         default: {
             throw new Error('Operation type not supported!');

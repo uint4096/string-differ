@@ -1,6 +1,6 @@
 import { LevenshteinMatrix } from "../../utils/types";
 
-export function Levenshtein (s1: string, s2: string): LevenshteinMatrix {
+export function CalculateLevenshteinMatrix (s1: string, s2: string): LevenshteinMatrix {
 
     const initializeMatrix = (l1: number, l2: number) => {
         const m: LevenshteinMatrix = []

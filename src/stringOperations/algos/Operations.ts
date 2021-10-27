@@ -73,7 +73,7 @@ export function getOperations (
             }
         }
 
-        return helper.getOperations().reverse();
+        return helper.getOperations();
     }
 }
 

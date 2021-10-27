@@ -80,7 +80,7 @@ export const RangeOperationsHelper = (s2: string): RangeTransforms => {
         pushOperations(deleteOps, 'delete');
         pushOperations(retainOps, 'retain');
 
-        return operations;
+        return operations.reverse();
     }
 
     return { addOperation, getOperations }

@@ -49,3 +49,8 @@ export interface RangeTransforms {
     addOperation(type: Operations, index: number): void;
     getOperations: () => Array<RangeOperations<Operations>>;
 }
+
+export type ExcludeUndefined<T> = T extends Array<(infer U | undefined)>
+    ? Array<U>
+    : never;
+
