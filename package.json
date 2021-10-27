@@ -1,15 +1,20 @@
 {
-  "name": "string-diff",
+  "name": "string-operational-transforms",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "types": "dist/index.d.ts",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/uint4096/string-operational-transforms",
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "typescript": "^4.3.4"
+  "author": "Abhishek Kumar",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.4.4"
   }
 }
