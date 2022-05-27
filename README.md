@@ -1,18 +1,20 @@
-# string-operational-transforms  
+# string-differ
 
 
-## Description  
+## Description
 
-A library to generate and perform operations on strings for operational-transforms implementations. This library can:  
+A Javascript library to compare and transform strings. This library can:
 
 * Generate operations to convert one string to another string.
-* Apply a given set of operations to a string to transform it into another string.  
+* Apply a given set of operations to a string to transform it into another string.
+
+This can be useful with operational-transforms implementaions.
 
 ## Installation  
 
-    npm i --save string-operational-transforms
+    npm i --save string-differ
 
-## Usage  
+## Usage
 
 This library uses a rough implementation of Levenshtein's algorithm to calculate the *edit distance* between two strings. It assumes that a string can be converted into another using 3 types of operations:
 * **insertion**
@@ -20,14 +22,14 @@ This library uses a rough implementation of Levenshtein's algorithm to calculate
 * **deletion**
 
 These types describe the operations that can be performed on string *s1* to convert it to string *s2*.
-### Generate steps for conversion  
+### Generate Steps for Conversion
 
-#### Character operations:  
+#### Character Operations
 
 Every step in the set of generated operations applies to one character in the base string (*s1*).  
 
 ```
-import { getStepsForTransformation } from 'string-operational-transforms';
+import { getStepsForTransformation } from 'string-differ';
 
 const s1 = 'initial string';
 const s2 = 'final string';
@@ -61,12 +63,12 @@ will output:
 ```
 Please note that the *value* field in the above output represents the character's index in the base string (*s1*) for *delete* and *retain* operations, while for *insert* operations it specifies the character to be inserted.  
 
-#### Range operations:  
+#### Range Operations
 
-This is a minor optimization over character operations. If the output type is specified as *"Range"*, certain consecutive operations of the same type are grouped together.  
+This is a minor optimization over character operations. If the output type is specified as *"Range"*, certain consecutive operations of the same type are grouped together.
 
 ```
-import { getStepsForTransformation } from 'string-operational-transforms';
+import { getStepsForTransformation } from 'string-differ';
 
 const s1 = 'initial string';
 const s2 = 'final string';
@@ -76,7 +78,7 @@ const steps = getStepsForTransformation("Range", { s1, s2 });
 console.log(steps);
 ```
 
-will output:  
+will output:
 
 ```
 [
@@ -88,16 +90,16 @@ will output:
   { type: 'retain', startIndex: 5, endIndex: 13 }
 ]
 ```
-Please note that for *"Range"* output type, the *delete* and *retain* operations will have a *startIndex* and *endIndex* field which represent the range of indices in the base string (*s1*). The *insert* operations, however, contain the *value* field which may specify one or more than one characters to be inserted.  
+Please note that for *"Range"* output type, the *delete* and *retain* operations will have a *startIndex* and *endIndex* field which represent the range of indices in the base string (*s1*). The *insert* operations, however, contain the *value* field which may specify one or more than one characters to be inserted.
 
-### Apply Operations to a String  
+### Apply Operations to a String
 
 Given a set of operations, and a base string (*s1*), the ```transformString``` function can be used to apply the steps to *s1* to get the resultant string *s2*.
 
-#### Range operations:  
+#### Range Operations
 
 ```
-import { transformString } from 'string-operational-transforms';
+import { transformString } from 'string-differ';
 
 const operations = [
   { type: 'delete', startIndex: 0, endIndex: 1 },
@@ -114,14 +116,14 @@ const s2 = transformString("Range", s1, operations);
 console.log(s2);
 ```
 
-will output  
+will output:
 
 ```'final string'```
 
-#### Character operations:  
+#### Character Operations
 
 ```
-import { transformString } from 'string-operational-transforms';
+import { transformString } from 'string-differ';
 
 const operations = [
   { type: 'delete', value: 0 },
@@ -148,11 +150,11 @@ const s2 = transformString("Char", s1, operations);
 console.log(s2);
 ```
 
-will output  
+will output:
 
 ```'final string'```
 
 
-## License  
+## License
 
 This library is distributed under the MIT License. See LICENSE.md for more information.
