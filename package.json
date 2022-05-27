@@ -1,7 +1,7 @@
 {
-  "name": "string-operational-transforms",
+  "name": "string-differ",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Javascript library to compare and transform strings.",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
@@ -10,8 +10,14 @@
   "files": [
     "dist"
   ],
-  "homepage": "https://github.com/uint4096/string-operational-transforms",
-  "keywords": [],
+  "homepage": "https://github.com/uint4096/string-differ",
+  "keywords": [
+    "string",
+    "diff",
+    "operational",
+    "transforms",
+    "levenshtein"
+  ],
   "author": "Abhishek Kumar",
   "license": "MIT",
   "devDependencies": {
