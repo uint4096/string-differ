@@ -1,6 +1,6 @@
 {
   "name": "string-differ",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Javascript library to compare and transform strings.",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
@@ -16,7 +16,8 @@
     "diff",
     "operational",
     "transforms",
-    "levenshtein"
+    "levenshtein",
+    "CRDT"
   ],
   "author": "Abhishek Kumar",
   "license": "MIT",

@@ -3,12 +3,10 @@
 
 ## Description
 
-A Javascript library to compare and transform strings. This library can:
+A library to compare and transform strings. This library can:
 
 * Generate operations to convert one string to another string.
 * Apply a given set of operations to a string to transform it into another string.
-
-This can be useful with operational-transforms implementaions.
 
 ## Installation  
 
@@ -21,12 +19,12 @@ This library uses a rough implementation of Levenshtein's algorithm to calculate
 * **retention**
 * **deletion**
 
-These types describe the operations that can be performed on string *s1* to convert it to string *s2*.
+These types describe the operations that can be performed on string `s1` to convert it to string `s2`.
 ### Generate Steps for Conversion
 
 #### Character Operations
 
-Every step in the set of generated operations applies to one character in the base string (*s1*).  
+This method generates an operation for every character in the base string (`s1`).  
 
 ```
 import { getStepsForTransformation } from 'string-differ';
@@ -61,11 +59,11 @@ will output:
   { type: 'retain', value: 13 }
 ]
 ```
-Please note that the *value* field in the above output represents the character's index in the base string (*s1*) for *delete* and *retain* operations, while for *insert* operations it specifies the character to be inserted.  
+For `delete` and `retain` operations, the `value` field in the output contains the character's index in the base string (`s1`). However, for `insert` operations, the `value` field contains the character to be inserted.  
 
 #### Range Operations
 
-This is a minor optimization over character operations. If the output type is specified as *"Range"*, certain consecutive operations of the same type are grouped together.
+This is a minor optimization over character operations. If the output type is specified as `"Range"`, certain consecutive operations of the same type are grouped together.
 
 ```
 import { getStepsForTransformation } from 'string-differ';
@@ -90,11 +88,11 @@ will output:
   { type: 'retain', startIndex: 5, endIndex: 13 }
 ]
 ```
-Please note that for *"Range"* output type, the *delete* and *retain* operations will have a *startIndex* and *endIndex* field which represent the range of indices in the base string (*s1*). The *insert* operations, however, contain the *value* field which may specify one or more than one characters to be inserted.
+For `"Range"` output type, the `delete` and `retain` operations will have `startIndex` and `endIndex` fields which represent the range of indices in the base string (`s1`). The `insert` operations, however, contain the `value` field which may specify one or more than one characters to be inserted.
 
 ### Apply Operations to a String
 
-Given a set of operations, and a base string (*s1*), the ```transformString``` function can be used to apply the steps to *s1* to get the resultant string *s2*.
+Given a set of operations, and a base string (`s1`), the ```transformString``` function can be used to apply the steps to `s1` to get the resultant string `s2`.
 
 #### Range Operations
 
@@ -118,7 +116,7 @@ console.log(s2);
 
 will output:
 
-```'final string'```
+`'final string'`
 
 #### Character Operations
 
@@ -152,7 +150,7 @@ console.log(s2);
 
 will output:
 
-```'final string'```
+`'final string'`
 
 
 ## License
