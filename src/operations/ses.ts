@@ -1,4 +1,4 @@
-import type { Context } from "../utils/types";
+import type { Context } from "../utils";
 import { Store } from "./store";
 
 export const shortestEdit = (a: string, b: string): Context => {

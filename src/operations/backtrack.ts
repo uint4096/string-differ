@@ -3,8 +3,7 @@ import type {
   RangeTransforms,
   ResultTypes,
   Context,
-  Traces,
-} from "../utils/types";
+} from "../utils";
 import { CharOperationsHelper, RangeOperationsHelper } from "./helpers";
 import { rollIdx } from "./store";
 
@@ -67,8 +66,6 @@ function createOperations(
     x = prevX;
     y = prevY;
   }
-
-  console.log("x", x, "y", y);
 
   while (x !== 0 || y !== 0) {
     retainOp(--x);

@@ -1,2 +1,2 @@
-export { CharOperationsHelper } from './char';
-export { RangeOperationsHelper } from './range';
+export { CharOperationsHelper } from "./char";
+export { RangeOperationsHelper } from "./range";

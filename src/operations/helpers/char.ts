@@ -1,4 +1,4 @@
-import { CharOperationsGroup, CharTransforms } from "../../utils/types";
+import type { CharOperationsGroup, CharTransforms } from "../../utils";
 
 export const CharOperationsHelper = (): CharTransforms => {
   const operations: Array<CharOperationsGroup> = [];

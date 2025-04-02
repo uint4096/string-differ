@@ -1,9 +1,9 @@
-import {
+import type {
   OperationContainer,
   Operations,
   RangeOperations,
   RangeTransforms,
-} from "../../utils/types";
+} from "../../utils";
 
 export const RangeOperationsHelper = (s2: string): RangeTransforms => {
   const retainOps: Array<OperationContainer> = [];

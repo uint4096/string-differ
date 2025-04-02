@@ -1,4 +1,4 @@
-import type { Traces } from "../utils/types";
+import type { Traces } from "../utils";
 
 export const rollIdx = (size: number, index: number) =>
   index < 0 ? size + index : index;

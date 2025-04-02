@@ -1,13 +1,12 @@
 import { shortestEdit, getOperations } from "./operations";
-import { fromCharOperations } from "./stringTransformation/fromCharOperations";
-import { fromRangeOperations } from "./stringTransformation/fromRangeOperations";
+import { fromCharOperations, fromRangeOperations } from "./transformation";
 import type {
   CharOperationsGroup,
   Operands,
   Operations,
   RangeOperations,
   ResultTypes,
-} from "./utils/types";
+} from "./utils";
 
 export function getStepsForTransformation(
   resultType: "Char",
