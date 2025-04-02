@@ -1,15 +1,18 @@
-const Store = (maxSize: number) => {
-  const xCoordinates: Array<number> = [];
-  const traces: Array<Array<number>> = [];
+export type Traces = Array<Array<number | null>>;
 
-  const getIdx = (index: number) => (index < 0 ? maxSize + index : index);
+export const rollIdx = (size: number, index: number) => (index < 0 ? size + index : index);
+
+export const Store = (maxSize: number) => {
+  const xCoordinates: Array<number> = [];
+  const traces: Traces = [];
+
 
   return {
     set: (index: number, value: number) => {
-      xCoordinates[getIdx(index)] = value;
+      xCoordinates[rollIdx(maxSize, index)] = value;
     },
 
-    get: (index: number) => xCoordinates[getIdx(index)],
+    get: (index: number) => xCoordinates[rollIdx(maxSize, index)],
 
     snapshot: () => traces.push([...xCoordinates]),
 

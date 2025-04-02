@@ -1,4 +1,6 @@
-export const shortestEdit = (a: string, b: string): Array<Array<number>> => {
+import { type Traces, Store } from "./store";
+
+export const shortestEdit = (a: string, b: string): Traces => {
   const max = a.length + b.length;
   const store = Store(max);
 
