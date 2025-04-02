@@ -1,11 +1,11 @@
-export type Traces = Array<Array<number | null>>;
+import type { Traces } from "../utils/types";
 
-export const rollIdx = (size: number, index: number) => (index < 0 ? size + index : index);
+export const rollIdx = (size: number, index: number) =>
+  index < 0 ? size + index : index;
 
 export const Store = (maxSize: number) => {
   const xCoordinates: Array<number> = [];
   const traces: Traces = [];
-
 
   return {
     set: (index: number, value: number) => {

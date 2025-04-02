@@ -1,6 +1,7 @@
-import { type Traces, Store } from "./store";
+import type { Context } from "../utils/types";
+import { Store } from "./store";
 
-export const shortestEdit = (a: string, b: string): Traces => {
+export const shortestEdit = (a: string, b: string): Context => {
   const max = a.length + b.length;
   const store = Store(max);
 
@@ -26,10 +27,10 @@ export const shortestEdit = (a: string, b: string): Traces => {
       store.set(k, x); // we only care about storing x values
 
       if (x >= a.length && y >= b.length) {
-        return store.getSnapshot();
+        return { a, b, traces: store.getSnapshot() };
       }
     }
   }
 
-  return store.getSnapshot();
+  return { a, b, traces: store.getSnapshot() };
 };

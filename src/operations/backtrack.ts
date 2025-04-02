@@ -1,32 +1,28 @@
-import {
+import type {
   CharTransforms,
   RangeTransforms,
   ResultTypes,
+  Context,
+  Traces,
 } from "../utils/types";
 import { CharOperationsHelper, RangeOperationsHelper } from "./helpers";
-import { rollIdx, type Traces } from "./store";
-
-type Context = {
-  a: string;
-  b: string;
-  traces: Traces;
-}
+import { rollIdx } from "./store";
 
 function createOperations(
   type: "Range",
   helper: RangeTransforms,
-  context: Context
+  context: Context,
 ): ReturnType<RangeTransforms["getOperations"]>;
 function createOperations(
   type: "Char",
   helper: CharTransforms,
-  context: Context
+  context: Context,
 ): ReturnType<CharTransforms["getOperations"]>;
 
 function createOperations(
   type: ResultTypes,
   helper: CharTransforms | RangeTransforms,
-  { a, b, traces }: Context
+  { a, b, traces }: Context,
 ) {
   const retainOp = (index: number) => helper.addOperation("retain", index);
   const insertOp = (index: number) =>
@@ -35,7 +31,8 @@ function createOperations(
       : (helper as RangeTransforms).addOperation("insert", index);
   const deleteOp = (index: number) => helper.addOperation("delete", index);
 
-  let x = a.length, y = b.length;
+  let x = a.length,
+    y = b.length;
   const size = x + y;
 
   for (let d = traces.length - 1; d > 0; d--) {
@@ -43,7 +40,10 @@ function createOperations(
     const trace = traces[d];
 
     const prevK =
-      d === -k || (d !== k && (trace[rollIdx(size, k + 1)] ?? -1) > (trace[rollIdx(size, k - 1)] ?? -1)) // prefer the move with larger x value
+      d === -k ||
+      (d !== k &&
+        (trace[rollIdx(size, k + 1)] ?? -1) >
+          (trace[rollIdx(size, k - 1)] ?? -1)) // prefer the move with larger x value
         ? k + 1
         : k - 1;
 
@@ -76,29 +76,29 @@ function createOperations(
     y -= 1;
   }
 
-
   return helper.getOperations();
 }
 
-export function getOperations(
-  type: ResultTypes,
-  traces: Traces,
-  a: string,
-  b: string,
-):
-  | ReturnType<CharTransforms["getOperations"]>
-  | ReturnType<RangeTransforms["getOperations"]> {
-  const context = { a, b, traces };
-
-  switch (type) {
-    case "Range": {
-      return createOperations("Range", RangeOperationsHelper(b), context);
+export const getOperations =
+  (type: ResultTypes) =>
+  (
+    context: Context,
+  ):
+    | ReturnType<CharTransforms["getOperations"]>
+    | ReturnType<RangeTransforms["getOperations"]> => {
+    switch (type) {
+      case "Range": {
+        return createOperations(
+          "Range",
+          RangeOperationsHelper(context.b),
+          context,
+        );
+      }
+      case "Char": {
+        return createOperations("Char", CharOperationsHelper(), context);
+      }
+      default: {
+        throw new Error("Unsupported operation type!");
+      }
     }
-    case "Char": {
-      return createOperations("Char", CharOperationsHelper(), context);
-    }
-    default: {
-      throw new Error("Unsupported operation type!");
-    }
-  }
-}
+  };
