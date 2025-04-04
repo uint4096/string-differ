@@ -1,8 +1,9 @@
-import type {
-  CharTransforms,
-  RangeTransforms,
-  ResultTypes,
-  Context,
+import {
+  type CharTransforms,
+  type RangeTransforms,
+  type ResultTypes,
+  type Context,
+  greaterThan,
 } from "../utils";
 import { CharOperationsHelper, RangeOperationsHelper } from "./helpers";
 import { rollIdx } from "./store";
@@ -32,7 +33,7 @@ function createOperations(
 
   let x = a.length,
     y = b.length;
-  const size = x + y;
+  const size = 2 * (x + y) + 1;
 
   for (let d = traces.length - 1; d > 0; d--) {
     const k = x - y;
@@ -41,8 +42,10 @@ function createOperations(
     const prevK =
       d === -k ||
       (d !== k &&
-        (trace[rollIdx(size, k + 1)] ?? -1) >
-          (trace[rollIdx(size, k - 1)] ?? -1)) // prefer the move with larger x value
+        greaterThan(
+          trace[rollIdx(size, k + 1)] ?? -1,
+          trace[rollIdx(size, k - 1)] ?? -1,
+        )) // prefer the move with larger x value
         ? k + 1
         : k - 1;
 
@@ -50,14 +53,14 @@ function createOperations(
     const prevY = prevX - prevK;
 
     // backtrack diagonal moves
-    while (x > prevX && y > prevY) {
+    while (greaterThan(x, prevX) && greaterThan(y, prevY)) {
       x = x - 1;
       y = y - 1;
 
       retainOp(x);
     }
 
-    if (prevX < x) {
+    if (greaterThan(x, prevX)) {
       deleteOp(x - 1);
     } else {
       insertOp(y - 1);
