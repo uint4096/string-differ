@@ -1,12 +1,10 @@
-import {
-  type CharTransforms,
-  type RangeTransforms,
-  type ResultTypes,
-  type Context,
-  greaterThan,
+import type {
+  CharTransforms,
+  RangeTransforms,
+  ResultTypes,
+  Context,
 } from "../utils";
 import { CharOperationsHelper, RangeOperationsHelper } from "./helpers";
-import { rollIdx } from "./store";
 
 function createOperations(
   type: "Range",
@@ -22,7 +20,7 @@ function createOperations(
 function createOperations(
   type: ResultTypes,
   helper: CharTransforms | RangeTransforms,
-  { a, b, traces }: Context,
+  { a, b, store }: Context,
 ) {
   const retainOp = (index: number) => helper.addOperation("retain", index);
   const insertOp = (index: number) =>
@@ -31,36 +29,30 @@ function createOperations(
       : (helper as RangeTransforms).addOperation("insert", index);
   const deleteOp = (index: number) => helper.addOperation("delete", index);
 
-  let x = a.length,
-    y = b.length;
-  const size = 2 * (x + y) + 1;
+  let x = a.length, y = b.length;
 
-  for (let d = traces.length - 1; d > 0; d--) {
+  for (let d = store.getSize() - 1; d > 0; d--) {
     const k = x - y;
-    const trace = traces[d];
 
     const prevK =
       d === -k ||
       (d !== k &&
-        greaterThan(
-          trace[rollIdx(size, k + 1)] ?? -1,
-          trace[rollIdx(size, k - 1)] ?? -1,
-        )) // prefer the move with larger x value
+        (store.get(d - 1, k + 1) ?? -1) > (store.get(d - 1, k - 1) ?? -1)) // prefer the move with larger x value
         ? k + 1
         : k - 1;
 
-    const prevX = trace[rollIdx(size, prevK)] ?? -1;
+    const prevX = store.get(d - 1, prevK) ?? -1;
     const prevY = prevX - prevK;
 
     // backtrack diagonal moves
-    while (greaterThan(x, prevX) && greaterThan(y, prevY)) {
+    while (x > prevX && y > prevY) {
       x = x - 1;
       y = y - 1;
 
       retainOp(x);
     }
 
-    if (greaterThan(x, prevX)) {
+    if (x > prevX) {
       deleteOp(x - 1);
     } else {
       insertOp(y - 1);
@@ -79,26 +71,25 @@ function createOperations(
   return helper.getOperations();
 }
 
-export const getOperations =
-  (type: ResultTypes) =>
-  (
-    context: Context,
-  ):
-    | ReturnType<CharTransforms["getOperations"]>
-    | ReturnType<RangeTransforms["getOperations"]> => {
-    switch (type) {
-      case "Range": {
-        return createOperations(
-          "Range",
-          RangeOperationsHelper(context.b),
-          context,
-        );
-      }
-      case "Char": {
-        return createOperations("Char", CharOperationsHelper(), context);
-      }
-      default: {
-        throw new Error("Unsupported operation type!");
-      }
+export const getOperations = (
+  type: ResultTypes,
+  context: Context,
+):
+  | ReturnType<CharTransforms["getOperations"]>
+  | ReturnType<RangeTransforms["getOperations"]> => {
+  switch (type) {
+    case "Range": {
+      return createOperations(
+        "Range",
+        RangeOperationsHelper(context.b),
+        context,
+      );
     }
-  };
+    case "Char": {
+      return createOperations("Char", CharOperationsHelper(), context);
+    }
+    default: {
+      throw new Error("Unsupported operation type!");
+    }
+  }
+};

@@ -1,19 +1,24 @@
 export type Operations = "insert" | "delete" | "retain";
 export type ResultTypes = "Range" | "Char";
 
-export type LevenshteinMatrix = Array<Array<number>>;
-
 export interface CharOperations<T extends Operations> {
   type: T;
   value: T extends Extract<Operations, "delete" | "retain"> ? number : string;
 }
 
-export type Traces = Array<Array<number | null>>;
+export type Traces = Array<Map<number, number>>;
+
+export interface IStore {
+  initialize: (step: number) => void;
+  set: (step: number, index: number, value: number) => void;
+  get: (step: number, index: number) => number | undefined;
+  getSize: () => number;
+};
 
 export type Context = {
   a: string;
   b: string;
-  traces: Traces;
+  store: IStore;
 };
 
 export interface Operands {
@@ -63,6 +68,3 @@ export interface RangeTransforms {
   addOperation(type: Operations, index: number): void;
   getOperations: () => Array<RangeOperations<Operations>>;
 }
-
-export type ExcludeUndefined<T> =
-  T extends Array<infer U | undefined> ? Array<U> : never;

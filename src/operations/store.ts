@@ -1,21 +1,19 @@
-import type { Traces } from "../utils";
+import type { Traces, IStore } from "../utils";
 
-export const rollIdx = (size: number, index: number) =>
-  index < 0 ? size + index : index;
-
-export const Store = (maxSize: number) => {
-  const xCoordinates: Array<number> = [];
+export const Store = (): IStore => {
   const traces: Traces = [];
 
   return {
-    set: (index: number, value: number) => {
-      xCoordinates[rollIdx(maxSize, index)] = value;
+    initialize: (step: number) => {
+      traces[step] = traces[step] ?? new Map<number, number>();
+    },
+  
+    set: (step: number, index: number, value: number) => {
+      traces[step].set(index, value);
     },
 
-    get: (index: number) => xCoordinates[rollIdx(maxSize, index)],
+    get: (step: number, index: number) => traces[step].get(index),
 
-    snapshot: () => traces.push([...xCoordinates]),
-
-    getSnapshot: () => traces,
+    getSize: () => traces.length
   };
 };
