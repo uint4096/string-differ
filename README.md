@@ -42,7 +42,7 @@ console.log(steps);
 
 will output:
 
-```json
+```
 [
   { type: 'delete', value: 0 },
   { type: 'delete', value: 1 },
@@ -82,7 +82,7 @@ console.log(steps);
 
 will output:
 
-```json
+```
 [
   { type: 'delete', startIndex: 0, endIndex: 1 },
   { type: 'insert', value: 'f' },
