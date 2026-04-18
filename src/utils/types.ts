@@ -3,10 +3,10 @@ export type ResultTypes = "Range" | "Char";
 
 export interface CharOperations<T extends Operations> {
   type: T;
-  value: T extends Extract<Operations, "delete" | "retain"> ? number : string;
+  value: T extends Extract<Operations, "delete" | "retain"> ? string : string;
 }
 
-export type Traces = Array<Map<number, number>>;
+export type Traces = Array<Int32Array>;
 
 export interface IStore {
   initialize: (step: number) => void;

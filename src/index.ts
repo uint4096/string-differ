@@ -1,4 +1,5 @@
 import { generateEditScript, getOperations, Store } from "./operations";
+import { diff } from "./operations/myers";
 import { fromCharOperations, fromRangeOperations } from "./transformation";
 import type {
   CharOperationsGroup,
@@ -8,15 +9,15 @@ import type {
   ResultTypes,
 } from "./utils";
 
-export function getStepsForTransformation(
-  resultType: "Char",
-  { s1, s2 }: Operands,
-): Array<CharOperationsGroup>;
+// export function getStepsForTransformation(
+//   resultType: "Char",
+//   { s1, s2 }: Operands,
+// ): Array<CharOperationsGroup>;
 
-export function getStepsForTransformation(
-  resultType: "Range",
-  { s1, s2 }: Operands,
-): Array<RangeOperations<Operations>>;
+// export function getStepsForTransformation(
+//   resultType: "Range",
+//   { s1, s2 }: Operands,
+// ): Array<RangeOperations<Operations>>;
 
 export function getStepsForTransformation(
   type: ResultTypes,
@@ -26,12 +27,7 @@ export function getStepsForTransformation(
     throw new Error("Operation type not supported!");
   }
 
-  const store = Store();
-
-  const context = { a: s1, b: s2, store };
-  generateEditScript(context);
-
-  return getOperations(type, context);
+  return diff(s1, s2);
 }
 
 export function transformString(

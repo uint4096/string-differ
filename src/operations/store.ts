@@ -1,19 +1,19 @@
 import type { Traces, IStore } from "../utils";
 
-export const Store = (): IStore => {
-  const traces: Traces = [];
+export const Store = (offset: number = 0) => {
+  let traces: any = new Array(2 * offset + 1).fill(-1);  
 
   return {
-    initialize: (step: number) => {
-      traces[step] = traces[step] ?? new Map<number, number>();
-    },
-  
-    set: (step: number, index: number, value: number) => {
-      traces[step].set(index, value);
+    initialize: () => {
+      traces = [];
     },
 
-    get: (step: number, index: number) => traces[step].get(index),
+    set: (index: number, value: number) => {
+      traces[index + offset] = value;
+    },
 
-    getSize: () => traces.length
+    get: (index: number) => traces[index + offset],
+
+    getSize: () => traces.length,
   };
 };

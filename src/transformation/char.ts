@@ -2,13 +2,10 @@ import type { CharOperationsGroup } from "../utils";
 
 export const fromCharOperations = (
   operations: Array<CharOperationsGroup>,
-  baseString: string,
 ) => {
   return operations.reduce((acc, op) => {
-    if (op.type === "insert") {
+    if (op.type === "insert" || op.type === "retain") {
       acc += op.value;
-    } else if (op.type === "retain") {
-      acc += baseString[op.value];
     }
 
     return acc;
