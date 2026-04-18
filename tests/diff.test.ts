@@ -10,7 +10,7 @@ describe("Char operations", () => {
 
     console.log("[A] Strings to transform:", a, b);
 
-    const steps = getStepsForTransformation("Char", { s1: a, s2: b });
+    const steps = getStepsForTransformation({ s1: a, s2: b });
 
     expect(steps).not.toBeUndefined();
     expect(Array.isArray(steps)).toBe(true);
@@ -18,7 +18,7 @@ describe("Char operations", () => {
       steps.every((step) => ["insert", "retain", "delete"].includes(step.type)),
     ).toBe(true);
 
-    const transformedString = transformString("Char", a, steps);
+    const transformedString = transformString(steps);
     expect(transformedString).toEqual(b);
   });
 
@@ -28,13 +28,13 @@ describe("Char operations", () => {
 
     console.log("[B] Strings to transform:", a, b);
 
-    const steps = getStepsForTransformation("Char", { s1: a, s2: b });
+    const steps = getStepsForTransformation({ s1: a, s2: b });
 
     expect(
       steps.every((step) => ["insert", "retain", "delete"].includes(step.type)),
     ).toBe(true);
 
-    const transformedString = transformString("Char", a, steps);
+    const transformedString = transformString(steps);
     expect(transformedString).toEqual(b);
   });
 
@@ -44,11 +44,11 @@ describe("Char operations", () => {
 
     console.log("[C] Strings to transform:", a, b);
 
-    const steps = getStepsForTransformation("Char", { s1: a, s2: b });
+    const steps = getStepsForTransformation({ s1: a, s2: b });
 
     expect(steps.every((step) => step.type === "delete")).toBe(true);
 
-    const transformedString = transformString("Char", a, steps);
+    const transformedString = transformString(steps);
     expect(transformedString).toEqual(b);
   });
 
@@ -58,11 +58,11 @@ describe("Char operations", () => {
 
     console.log("[D] Strings to transform:", a, b);
 
-    const steps = getStepsForTransformation("Char", { s1: a, s2: b });
+    const steps = getStepsForTransformation({ s1: a, s2: b });
 
     expect(steps.every((step) => step.type === "insert")).toBe(true);
 
-    const transformedString = transformString("Char", a, steps);
+    const transformedString = transformString(steps);
     expect(transformedString).toEqual(b);
   });
 
@@ -72,9 +72,9 @@ describe("Char operations", () => {
 
     console.log("[E] Strings to transform:", a, b);
 
-    const steps = getStepsForTransformation("Char", { s1: a, s2: b });
+    const steps = getStepsForTransformation({ s1: a, s2: b });
 
-    const transformedString = transformString("Char", a, steps);
+    const transformedString = transformString(steps);
     expect(transformedString).toEqual(b);
   });
 
@@ -82,9 +82,9 @@ describe("Char operations", () => {
     const a = randomString(20000);
     const b = createDiff(a, { characters: 20 });
 
-    const steps = getStepsForTransformation("Char", { s1: a, s2: b });
+    const steps = getStepsForTransformation({ s1: a, s2: b });
 
-    const transformedString = transformString("Char", a, steps);
+    const transformedString = transformString(steps);
     expect(transformedString).toEqual(b);
   });
 
@@ -92,39 +92,9 @@ describe("Char operations", () => {
     const a = randomString(10000);
     const b = createDiff(a, { characters: 20, size: 30 });
 
-    const steps = getStepsForTransformation("Range", { s1: a, s2: b });
+    const steps = getStepsForTransformation({ s1: a, s2: b });
 
-    const transformedString = transformString("Range", a, steps);
-    expect(transformedString).toEqual(b);
-  });
-});
-
-describe("Range operations", () => {
-  it("should transform string a to b - small strings", () => {
-    const a = randomString(50);
-    const b = createDiff(a, { characters: 10 });
-
-    console.log("[A] Strings to transform:", a, b);
-
-    const steps = getStepsForTransformation("Range", { s1: a, s2: b });
-
-    expect(steps).not.toBeUndefined();
-    expect(Array.isArray(steps)).toBe(true);
-    expect(
-      steps.every((step) => ["insert", "retain", "delete"].includes(step.type)),
-    ).toBe(true);
-
-    const transformedString = transformString("Range", a, steps);
-    expect(transformedString).toEqual(b);
-  });
-
-  it("should transform string a to b - large strings", () => {
-    const a = randomString(20000);
-    const b = createDiff(a, { characters: 20 });
-
-    const steps = getStepsForTransformation("Range", { s1: a, s2: b });
-
-    const transformedString = transformString("Range", a, steps);
+    const transformedString = transformString(steps);
     expect(transformedString).toEqual(b);
   });
 });
