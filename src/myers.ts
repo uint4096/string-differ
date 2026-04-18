@@ -1,45 +1,43 @@
-import { CharOperations, CharOperationsGroup  } from "../utils";
+import type { CharOperationsGroup, DiffArgs } from "./types";
 import { generateEditScript } from "./ses";
 
-type DiffArgs = {
-  a: string,
-  b: string,
-  aStart?: number,
-  aEnd?: number,
-  bStart?: number,
-  bEnd?: number
-};
-
-const retainPrefix = (
-  { a, b, aStart, bStart, aEnd, bEnd }: Required<DiffArgs>
-): number => {
+const retainPrefix = ({
+  a,
+  b,
+  aStart,
+  bStart,
+  aEnd,
+  bEnd,
+}: Required<DiffArgs>): number => {
   let retentionLength = 0;
 
-  while(
-    aStart <= aEnd &&
-    bStart <= bEnd &&
-    a[aStart] === b[bStart]
-  ) {
+  while (aStart <= aEnd && bStart <= bEnd && a.charCodeAt(aStart) === b.charCodeAt(bStart)) {
     retentionLength += 1;
     aStart += 1;
     bStart += 1;
   }
 
   return retentionLength;
-}
+};
 
-const retainSuffix = (
-{ a, b, aStart, bStart, aEnd, bEnd }: Required<DiffArgs>): number => {
+const retainSuffix = ({
+  a,
+  b,
+  aStart,
+  bStart,
+  aEnd,
+  bEnd,
+}: Required<DiffArgs>): number => {
   let retentionLength = 0;
 
-  while(aStart <= aEnd && bStart <= bEnd && a[aEnd] === b[bEnd]) {
+  while (aStart <= aEnd && bStart <= bEnd && a.charCodeAt(aEnd) === b.charCodeAt(bEnd)) {
     retentionLength += 1;
     aEnd -= 1;
     bEnd -= 1;
   }
 
   return retentionLength;
-}
+};
 
 export const diff = ({
   a,
@@ -49,7 +47,9 @@ export const diff = ({
   bStart = 0,
   aEnd = a.length - 1,
   bEnd = b.length - 1,
-}: DiffArgs & { operations?: Array<CharOperationsGroup> }): Array<CharOperationsGroup> => {
+}: DiffArgs & {
+  operations?: Array<CharOperationsGroup>;
+}): Array<CharOperationsGroup> => {
   if (aStart > aEnd) {
     operations.push({ type: "insert", value: b.slice(bStart, bEnd + 1) });
     return operations;
@@ -66,7 +66,7 @@ export const diff = ({
     aStart,
     bStart,
     aEnd,
-    bEnd
+    bEnd,
   });
 
   const suffixLength = retainSuffix({
@@ -75,30 +75,45 @@ export const diff = ({
     aStart: aStart + prefixLength,
     bStart: bStart + prefixLength,
     aEnd,
-    bEnd
+    bEnd,
   });
 
   if (prefixLength) {
-    operations.push({ type: "retain", value: a.slice(aStart, aStart + prefixLength) });
+    operations.push({
+      type: "retain",
+      value: a.slice(aStart, aStart + prefixLength),
+    });
   }
 
   if (aStart + prefixLength > aEnd - suffixLength) {
     if (bStart + prefixLength <= bEnd - suffixLength) {
-      operations.push({ type: "insert", value: b.slice(bStart + prefixLength, bEnd - suffixLength + 1) });
+      operations.push({
+        type: "insert",
+        value: b.slice(bStart + prefixLength, bEnd - suffixLength + 1),
+      });
     }
 
     if (suffixLength) {
-      operations.push({ type: "retain", value: a.slice(aEnd - suffixLength + 1, aEnd + 1) });
+      operations.push({
+        type: "retain",
+        value: a.slice(aEnd - suffixLength + 1, aEnd + 1),
+      });
     }
 
     return operations;
   }
 
   if (bStart + prefixLength > bEnd - suffixLength) {
-    operations.push({ type: "delete", value: a.slice(aStart + prefixLength, aEnd - suffixLength + 1) });
+    operations.push({
+      type: "delete",
+      value: a.slice(aStart + prefixLength, aEnd - suffixLength + 1),
+    });
 
     if (suffixLength) {
-      operations.push({ type: "retain", value: a.slice(aEnd - suffixLength + 1, aEnd + 1) });
+      operations.push({
+        type: "retain",
+        value: a.slice(aEnd - suffixLength + 1, aEnd + 1),
+      });
     }
 
     return operations;
@@ -110,13 +125,19 @@ export const diff = ({
     aStart: aStart + prefixLength,
     bStart: bStart + prefixLength,
     aEnd: aEnd - suffixLength,
-    bEnd: bEnd - suffixLength
+    bEnd: bEnd - suffixLength,
   });
 
-  if (splitX == null || splitY == null ) {
+  if (splitX == null || splitY == null) {
     operations.push(
-      { type: 'delete', value: a.slice(aStart + prefixLength, aEnd - suffixLength + 1) },
-      { type: 'insert', value: b.slice(bStart + prefixLength, bEnd - suffixLength + 1)}
+      {
+        type: "delete",
+        value: a.slice(aStart + prefixLength, aEnd - suffixLength + 1),
+      },
+      {
+        type: "insert",
+        value: b.slice(bStart + prefixLength, bEnd - suffixLength + 1),
+      },
     );
   } else {
     diff({
@@ -126,7 +147,7 @@ export const diff = ({
       aStart: aStart + prefixLength,
       aEnd: aStart + prefixLength + splitX - 1,
       bStart: bStart + prefixLength,
-      bEnd: bStart + prefixLength + splitY - 1
+      bEnd: bStart + prefixLength + splitY - 1,
     });
 
     diff({
@@ -136,13 +157,16 @@ export const diff = ({
       aStart: aStart + prefixLength + splitX,
       aEnd: aEnd - suffixLength,
       bStart: bStart + prefixLength + splitY,
-      bEnd: bEnd - suffixLength
+      bEnd: bEnd - suffixLength,
     });
   }
 
   if (suffixLength) {
-    operations.push({ type: "retain", value: a.slice(aEnd - suffixLength + 1, aEnd + 1) });
+    operations.push({
+      type: "retain",
+      value: a.slice(aEnd - suffixLength + 1, aEnd + 1),
+    });
   }
 
   return operations;
-}
+};

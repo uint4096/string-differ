@@ -1,8 +1,6 @@
-import type { CharOperationsGroup } from "../utils";
+import type { CharOperationsGroup } from "./types";
 
-export const fromCharOperations = (
-  operations: Array<CharOperationsGroup>,
-) => {
+export const fromCharOperations = (operations: Array<CharOperationsGroup>) => {
   return operations.reduce((acc, op) => {
     if (op.type === "insert" || op.type === "retain") {
       acc += op.value;
