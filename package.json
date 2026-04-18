@@ -1,12 +1,12 @@
 {
   "name": "string-differ",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "A Javascript library to compare and transform strings.",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "pnpm clean && tsc",
+    "build": "pnpm clean && tsc -p tsconfig.prod.json",
     "build:w": "pnpm clean && tsc --watch",
     "publish:npm": "pnpm clean && pnpm build && pnpm publish",
     "test": "vitest"
@@ -24,7 +24,7 @@
     "crdt"
   ],
   "author": "Abhishek Kumar",
-  "license": "MIT",
+  "license": "LGPL-3.0-only",
   "devDependencies": {
     "random-string-generator": "^1.0.7",
     "rimraf": "^6.0.1",
